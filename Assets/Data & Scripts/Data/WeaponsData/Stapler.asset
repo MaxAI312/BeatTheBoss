@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a966eadee49c6d34b9967350dd9f6da4, type: 3}
+  m_Name: Stapler
+  m_EditorClassIdentifier: 
+  Label: 0
+  Icon: {fileID: 21300000, guid: d6cce558fcc344f4ea971d01b01edaa6, type: 3}
+  Description: Stapler
+  _grenadePrefab: {fileID: 6399899886025759444, guid: bdaca96f07112d44d8cea0d99f63c634, type: 3}
+  _damage: 50
