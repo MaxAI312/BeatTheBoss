@@ -1,3 +1,5 @@
 using UnityEngine;
 
-public class GateViewTrigger : MonoBehaviour { }
+public class GateViewTrigger : MonoBehaviour
+{
+}

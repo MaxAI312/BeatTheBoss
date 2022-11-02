@@ -1,3 +1,5 @@
 using UnityEngine;
 
-public class BossGateStopper : MonoBehaviour { }
+public class BossGateStopper : MonoBehaviour
+{
+}

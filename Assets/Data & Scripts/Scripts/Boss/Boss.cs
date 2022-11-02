@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using RunnerMovementSystem;
 using UnityEngine;
@@ -16,7 +15,7 @@ public class Boss : MonoBehaviour
     [SerializeField] private HeadCollider _headCollider;
     [SerializeField] private ParticleSystem _finisherParticleSystem;
     [SerializeField] [Min(0)] private float _takenDamage;
-    [SerializeField] private BossOpeningParticle _bossOpeningParticle;//refactoring
+    [SerializeField] private BossOpeningParticle _bossOpeningParticle;
 
     private float _defaultSpeed;
     private IReadOnlyParameterInt _playerRage;
@@ -68,11 +67,6 @@ public class Boss : MonoBehaviour
         _movementSystem.enabled = true;
     }
 
-    public void ResetRotation()
-    {
-        transform.rotation = Quaternion.Euler(Vector3.zero);
-    }
-
     public void StopMove()
     {
         _bossInput.Disable();
@@ -85,28 +79,9 @@ public class Boss : MonoBehaviour
         _bossAnimator.SetTimeScale(value);
     }
 
-    public void ShowAcceleration()
-    {
-        Debug.Log("Тут нужно написать нормально");
-        _takenDamage += 10;//MAGIC INT
-        _bossBeatenView.SetHitted(_takenDamage);
-
-        StartCoroutine(ShowingAcceleration());
-    }
-
     public void PlayFinisherParticles()
     {
         _finisherParticleSystem.Play();
-    }
-
-    private void OnRageChanged(int rageValue)
-    {
-        rageValue = Mathf.Clamp(rageValue, 0, 100);//MAGIC INT
-        var rageNormalized = rageValue / 100f;//MAGIC INT
-        _movementSystem.SetSpeed(_defaultSpeed + _defaultSpeed * rageNormalized * 0.5f);//MAGIC INT
-
-        var animationSpeed = Mathf.Clamp(_movementSystem.CurrentSpeed / _defaultSpeed, 0.5f, 1.5f);//MAGIC INT
-        _bossAnimator.SetTimeScale(animationSpeed);
     }
 
     private void OnStopperTaken()
@@ -133,13 +108,5 @@ public class Boss : MonoBehaviour
     {
         _bossAnimator.ShowWallHit();
         MultiplierValue = wall.MultiplierValue;
-    }
-
-    private IEnumerator ShowingAcceleration()
-    {
-        yield return new WaitForSeconds(0.05f);//MAGIC INT
-        SetTimeScale(4f);
-        yield return new WaitForSeconds(0.5f);//MAGIC INT
-        SetTimeScale(1f);
     }
 }

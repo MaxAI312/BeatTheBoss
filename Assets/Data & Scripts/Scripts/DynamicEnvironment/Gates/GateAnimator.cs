@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public class GateAnimator : MonoBehaviour, IAnimationable
+public class GateAnimator : MonoBehaviour
 {
     private Animator _animator;
 

@@ -1,16 +1,17 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class ItemRagdoll : MonoBehaviour
+public class ItemPhysics : MonoBehaviour
 {
     [SerializeField] private Rigidbody[] _allRigidbodies;
-    [SerializeField] private float _hitForce;
+
+    private float delayBeforeCallback = 0.3f;
     
     public void MakePhysics()
     {
         Sequence sequence = DOTween.Sequence();
 
-        sequence.AppendInterval(0.3f);//MAGIC INT
+        sequence.AppendInterval(delayBeforeCallback);
         sequence.AppendCallback(() =>
         {
             foreach (var rigidbody in _allRigidbodies) rigidbody.isKinematic = false;

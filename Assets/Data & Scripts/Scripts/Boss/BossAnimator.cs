@@ -13,6 +13,9 @@ public class BossAnimator : MonoBehaviour
     private const string HitToBody = nameof(HitToBody);
     private const string Yelling = nameof(Yelling);
     private const string Fail = nameof(Fail);
+
+    private int _targetLayerIndex = 1;
+    private float _minWeightTargetLayer = 0;
     
     [SerializeField] private Animator _bossAnimator;
     [SerializeField] private AnimationCurve _hittedAnimationCurve;
@@ -109,10 +112,10 @@ public class BossAnimator : MonoBehaviour
     {
         for (float i = 0; i < 1; i += Time.deltaTime)
         {
-            _bossAnimator.SetLayerWeight(1, _hittedAnimationCurve.Evaluate(i));
+            _bossAnimator.SetLayerWeight(_targetLayerIndex, _hittedAnimationCurve.Evaluate(i));
 
             yield return null;
         }
-        _bossAnimator.SetLayerWeight(1, 0f);//MAGIC INT
+        _bossAnimator.SetLayerWeight(_targetLayerIndex, _minWeightTargetLayer);
     }
 }
