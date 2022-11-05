@@ -1,22 +1,24 @@
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.UI;
 using System;
 
 public class TeapotController : MonoBehaviour
 {
+    private const string Blend = nameof(Blend);
+    
     [SerializeField] private ParticleSystem _firstParticleSystem;
     [SerializeField] private ParticleSystem _secondParticleSystem;
     [SerializeField] private Teapot _teapot;
     [SerializeField] private Player _player;
     [SerializeField] private Gradient _gradient;
     [SerializeField] private Animator _animator;
-    [SerializeField] private bool _isFinish = false;
 
     private MeshRenderer _meshRenderer;
     private int _minEmissionValue = 1;
     private int _maxEmissionValue = 45;
     private int _currentEmissionCount;
+    private float _durationAfterEffect = 0.2f;
+    private int _indexConvertMaterial = 1;
 
     private void Awake()
     {
@@ -27,13 +29,8 @@ public class TeapotController : MonoBehaviour
     private void Update()
     {
         ChangeEmissionCount();
-        TestConvertColor();
-        TestAnimation();
-    }
-
-    public void PlayReaction()
-    {
-        Sequence sequence = DOTween.Sequence();
+        ConvertColor();
+        BlendAnimation();
     }
 
     private void ChangeEmissionCount()
@@ -45,7 +42,6 @@ public class TeapotController : MonoBehaviour
 
     private int GetConvertedToInt()
     {
-
         float normalizeRageValue = (float)_player.Rage.Value / _player.PlayerConfig.MaxRage;
         float normalizeEmissionValue = Mathf.Round((normalizeRageValue / ((float)_minEmissionValue / _maxEmissionValue)));
         _currentEmissionCount = Convert.ToInt32(normalizeEmissionValue);
@@ -53,17 +49,17 @@ public class TeapotController : MonoBehaviour
         return _currentEmissionCount;
     }
 
-    private void TestConvertColor()
+    private void ConvertColor()
     {
         float normalizeRageValue = (float)_player.Rage.Value / _player.PlayerConfig.MaxRage;
 
-        _meshRenderer.materials[0].color = _gradient.Evaluate(normalizeRageValue);
+        _meshRenderer.materials[_indexConvertMaterial].color = _gradient.Evaluate(normalizeRageValue);
     }
 
-    private void TestAnimation()
+    private void BlendAnimation()
     {
         float normalizeRageValue = (float)_player.Rage.Value / _player.PlayerConfig.MaxRage;
-        _animator.SetFloat("Blend", normalizeRageValue);//MAGIC STRING
+        _animator.SetFloat(Blend, normalizeRageValue);
     }
 
     private void PlayFirstParticle()
@@ -76,8 +72,7 @@ public class TeapotController : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
 
         sequence.AppendCallback(() => _secondParticleSystem.Play());
-        sequence.AppendInterval(0.2f);
+        sequence.AppendInterval(_durationAfterEffect);
         _firstParticleSystem.gameObject.SetActive(false);
-        //_secondParticleSystem.Play();
     }
 }

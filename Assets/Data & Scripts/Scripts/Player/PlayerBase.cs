@@ -10,13 +10,15 @@ public abstract class PlayerBase : MonoBehaviour
     [SerializeField] private PlayerAnimator _playerAnimator;
     [SerializeField] private RageLoss _rageLoss;
     [SerializeField] private PlayerParticleController _playerParticleController;
-    [SerializeField] private SlapParticle[] _slapParticles;
+    [SerializeField] private SlapController[] _slapParticles;
     [SerializeField] private AnimationCurve _openingRageAnimationCurve;
     [SerializeField] [Min(0.001f)] private float _rageAnimatinDuration;
     [SerializeField] [Min(0)] private float _moddleHitDelta;
     [SerializeField] private PlayerOpeningParticle _playerOpeningParticle;
 
     private ParameterInt _rage;
+    private int _minIndexSlapAnimation = 0;
+    private int _maxIndexSlapAnimation = 5;
 
     public PlayerCollisionHandler CollisionHandler => _playerCollisionHandler;
     public UIWidgetRageBar UIWidgetRageBar => _rageBar;
@@ -25,7 +27,7 @@ public abstract class PlayerBase : MonoBehaviour
     public RageLoss RageLoss => _rageLoss;
     public IReadOnlyParameterInt Rage => _rage;
     public PlayerConfig PlayerConfig => _playerConfig;
-    public SlapParticle[] SlapParticles => _slapParticles; //может быть нужен интерфейс на чтение?
+    public SlapController[] SlapParticles => _slapParticles;
     public PlayerOpeningParticle PlayerOpeningParticle => _playerOpeningParticle;
 
     protected virtual void Awake()
@@ -65,11 +67,11 @@ public abstract class PlayerBase : MonoBehaviour
             _slapParticles[i].EnableCollider();
 
         if (itemRelativePos.x > _moddleHitDelta)
-            _playerAnimator.ShowRightHandSlapBy(Random.Range(0, 5));//MAGIC INT
+            _playerAnimator.ShowRightHandSlapBy(Random.Range(_minIndexSlapAnimation, _maxIndexSlapAnimation));
         else if (itemRelativePos.x < -_moddleHitDelta)
-            _playerAnimator.ShowLeftHandSlapBy(Random.Range(0, 5));//MAGIC INT
+            _playerAnimator.ShowLeftHandSlapBy(Random.Range(_minIndexSlapAnimation, _maxIndexSlapAnimation));
         else
-            _playerAnimator.ShowMiddleSlapBy(Random.Range(0, 5));//MAGIC INT
+            _playerAnimator.ShowMiddleSlapBy(Random.Range(_minIndexSlapAnimation, _maxIndexSlapAnimation));
 
         _rage.Add(item.RageValue);
     }
@@ -86,11 +88,6 @@ public abstract class PlayerBase : MonoBehaviour
         PlayerAnimator.ShowSlap();
     }
 
-    private void OnTicked(int value)
-    {
-        _rage.Add(-value);
-    }
-
     private void OnGuardTaken(ItemGuard guard)
     {
         guard.Disable();
@@ -103,11 +100,11 @@ public abstract class PlayerBase : MonoBehaviour
                 _slapParticles[i].EnableCollider();
 
             if (itemRelativePos.x > _moddleHitDelta)
-                _playerAnimator.ShowRightHandSlapBy(Random.Range(0, 5));//MAGIC INT
+                _playerAnimator.ShowRightHandSlapBy(Random.Range(_minIndexSlapAnimation, _maxIndexSlapAnimation));
             else if (itemRelativePos.x < -_moddleHitDelta)
-                _playerAnimator.ShowLeftHandSlapBy(Random.Range(0, 5));//MAGIC INT
+                _playerAnimator.ShowLeftHandSlapBy(Random.Range(_minIndexSlapAnimation, _maxIndexSlapAnimation));
             else
-                _playerAnimator.ShowMiddleSlapBy(Random.Range(0, 5));//MAGIC INT
+                _playerAnimator.ShowMiddleSlapBy(Random.Range(_minIndexSlapAnimation, _maxIndexSlapAnimation));
 
             _rage.Add(guard.RageValue);
         }
@@ -116,24 +113,5 @@ public abstract class PlayerBase : MonoBehaviour
             guard.ShowPush();
             _rage.Add(-guard.RageValue);
         }
-    }
-
-    public void ShowOpeningRageAnimation()
-    {
-        StartCoroutine(OpeningAnimationShowing());
-    }
-
-    private IEnumerator OpeningAnimationShowing()
-    {
-        for (float i = 0; i < 1; i += Time.deltaTime / _rageAnimatinDuration)
-        {
-            var value = _openingRageAnimationCurve.Evaluate(i);
-
-            _rage.Set((int) value);
-
-            yield return null;
-        }
-
-        _rage.Set(0);
     }
 }

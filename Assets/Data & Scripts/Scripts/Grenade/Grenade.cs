@@ -72,13 +72,10 @@ public class Grenade : MonoBehaviour
             transform.position = Vector3.LerpUnclamped(startPoint, target, time) +
                                  new Vector3(0, _yCurve.Evaluate(time), 0);
             
-            //transform.position += _boss.transform.position - bossStartPosition;
-
             transform.position += _boss.transform.forward * _boss.Speed/2 * time;
             
             yield return null;
         }
-        Debug.Log("Тут выше, надо немного подумать над броском");
 
         Destroy();
     }

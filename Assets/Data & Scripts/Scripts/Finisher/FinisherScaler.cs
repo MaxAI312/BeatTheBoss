@@ -40,11 +40,6 @@ public class FinisherScaler : MonoBehaviour
         }
     }
 
-    public void Scale()
-    {
-        transform.DOScale(transform.localScale + new Vector3(0.5f, 0.5f, 0.5f), 0.5f);//MAGIC INT
-    }
-
     public void Enable()
     {
         enabled = true;

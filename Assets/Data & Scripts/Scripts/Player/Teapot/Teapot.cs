@@ -1,4 +1,5 @@
 using UnityEngine;
 
-public class Teapot : MonoBehaviour { }
-
+public class Teapot : MonoBehaviour
+{
+}

@@ -8,12 +8,15 @@ public class FadeEffect : MonoBehaviour
     private WeaponChooser _weaponChooser;
     private CanvasGroup _canvasGroup;
     private bool _isPicking = false;
+    private float _targetPickStartedAlpha = 1f;
+    private float _targetPickEndedAlpha = 0f;
+    private float _durationPickStart = 0.1f;
+    private float _durationPickEnd = 0.5f;
 
     private void Awake()
     {
         _weaponChooser = GetComponent<WeaponChooser>();
         _canvasGroup = GetComponent<CanvasGroup>();
-        //_canvasGroup.DOFade(0, 0);
     }
     private void OnEnable()
     {
@@ -34,14 +37,14 @@ public class FadeEffect : MonoBehaviour
 
         do
         {
-            _canvasGroup.alpha = Mathf.Lerp(_canvasGroup.alpha, 1, 0.1f);//MAGIC INT
+            _canvasGroup.alpha = Mathf.Lerp(_canvasGroup.alpha, _targetPickStartedAlpha, _durationPickStart);
             await Task.Yield();
-        } while (_canvasGroup.alpha < 0.99f && _isPicking == true);//MAGIC INT
+        } while (_canvasGroup.alpha < 0.99f && _isPicking == true);
     }
 
     public void OnPickEnded(FinisherWeaponData data)
     {
         _isPicking = false;
-        _canvasGroup.DOFade(0, 0.5f);//MAGIC INT
+        _canvasGroup.DOFade(_targetPickEndedAlpha, _durationPickEnd);
     }
 }

@@ -12,7 +12,6 @@ public class PlayerCollisionHandler : MonoBehaviour
         var gate = other.GetComponent<Gate>();
         var gateView = other.GetComponent<GateView>();
         var finisher = other.GetComponentInParent<Finisher>();
-        var workerTrigger = other.GetComponentInParent<BotTrigger>();
         var guard = other.GetComponent<ItemGuard>();
 
         if (item)
@@ -45,8 +44,6 @@ public class PlayerCollisionHandler : MonoBehaviour
             finisher.DisableTrigger();
             FinisherTaken?.Invoke();
         }
-
-        if (workerTrigger) workerTrigger.SetTaken();
 
         if (guard)
         {

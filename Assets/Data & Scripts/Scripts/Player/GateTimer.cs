@@ -1,1 +1,3 @@
-public class GateTimer : MainTimer { }
+public class GateTimer : MainTimer
+{
+}

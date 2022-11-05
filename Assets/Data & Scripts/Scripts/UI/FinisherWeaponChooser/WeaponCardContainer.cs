@@ -17,8 +17,11 @@ public class WeaponCardContainer : MonoBehaviour
     private float _animateTime = 0.3f;
 
     [SerializeField] private float _delayToPresent = 0.3f;
-    private Button _button;
 
+    private float _scalingHideMultiplier = 0.7f;
+    private float _scalingShowMultiplier = 1.3f;
+    private float _targetAnchorPosX = 0f;
+    private Button _button;
     private FinisherWeaponData _data;
 
     public bool IsClicked { get; private set; }
@@ -51,8 +54,8 @@ public class WeaponCardContainer : MonoBehaviour
 
     public void ShowHide()
     {
-        _rect.DOAnchorPosX(0, _animateTime).SetEase(Ease.InOutBack);
-        _rect.DOScale(Vector3.one * 0.7f, _animateTime);
+        _rect.DOAnchorPosX(_targetAnchorPosX, _animateTime).SetEase(Ease.InOutBack);
+        _rect.DOScale(Vector3.one * _scalingHideMultiplier, _animateTime);
     }
 
     private void OnClick()
@@ -66,8 +69,8 @@ public class WeaponCardContainer : MonoBehaviour
     {
         PickedStart?.Invoke(this);
 
-        _rect.DOAnchorPosX(0, _animateTime).SetEase(Ease.InOutBack);
-        _rect.DOScale(Vector3.one * 1.3f, _animateTime);//MAGIC INT
+        _rect.DOAnchorPosX(_targetAnchorPosX, _animateTime).SetEase(Ease.InOutBack);
+        _rect.DOScale(Vector3.one * _scalingShowMultiplier, _animateTime);
 
         yield return new WaitForSeconds(_animateTime + _delayToPresent);
 

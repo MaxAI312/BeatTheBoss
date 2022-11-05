@@ -1,3 +1,5 @@
 using UnityEngine;
 
-public class Cap : MonoBehaviour { }
+public class Cap : MonoBehaviour
+{
+}

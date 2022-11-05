@@ -1,1 +1,3 @@
-public class RageLoss : BarLoss { }
+public class RageLoss : BarLoss
+{
+}

@@ -2,9 +2,11 @@ using UnityEngine;
 using DG.Tweening;
 
 [RequireComponent(typeof(Rigidbody))]
-public class StartingKeycup : MonoBehaviour, IPhysics
+public class StartingKeycup : MonoBehaviour
 {
     private Rigidbody _rigidbody;
+    private float targetPositionX = 2f;
+    private float durationPushing = 0.75f;
 
     private void Awake()
     {
@@ -18,6 +20,6 @@ public class StartingKeycup : MonoBehaviour, IPhysics
 
     public void PushByLocalY()
     {
-        transform.DOLocalMoveY(transform.localPosition.y + 2f, 0.75f);//MAGIC INT
+        transform.DOLocalMoveY(transform.localPosition.y + targetPositionX, durationPushing);
     }
 }

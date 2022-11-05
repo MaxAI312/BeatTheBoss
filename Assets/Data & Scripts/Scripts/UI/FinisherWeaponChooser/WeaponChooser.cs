@@ -19,6 +19,10 @@ public class WeaponChooser : MonoBehaviour
     private List<WeaponCardContainer> _initedCards;
     private List<FinisherWeaponData> _nonPicked;
     private List<FinisherWeaponData> _weapons;
+    private int indexFirstCard = 0;
+    private int indexSecondCard = 1;
+    private float _durationBeforeFirstCard = 0.75f;
+    private float _durationBeforeSecondCard = 0.2f;
 
     private void Awake()
     {
@@ -73,17 +77,21 @@ public class WeaponChooser : MonoBehaviour
         _cards.Add(card);
     }
 
+    private void ShowCard(int indexCard)
+    {
+        _cards[indexCard].transform.localPosition = _cardPlaces[indexCard].localPosition;
+        _cards[indexCard].gameObject.SetActive(true);
+    }
+    
     private IEnumerator ShowCards(bool setActive)
     {
         if (setActive)
         {
-            yield return new WaitForSeconds(0.75f);//MAGIK INT
-            _cards[0].transform.localPosition = _cardPlaces[0].localPosition;//MAGIK INT
-            _cards[0].gameObject.SetActive(true);
-            //duplicate
-            yield return new WaitForSeconds(0.2f);//MAGIK INT
-            _cards[1].transform.localPosition = _cardPlaces[1].localPosition;//MAGIK INT
-            _cards[1].gameObject.SetActive(true);//MAGIK INT
+            yield return new WaitForSeconds(_durationBeforeFirstCard);
+            ShowCard(indexFirstCard);
+            
+            yield return new WaitForSeconds(_durationBeforeSecondCard);
+            ShowCard(indexSecondCard);
         }
         else
         {

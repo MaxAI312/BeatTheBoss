@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BrokenGlass : MonoBehaviour, IPhysics
+public class BrokenGlass : MonoBehaviour
 {
     [SerializeField] private GameObject _unbrokenGlassModel;
     [SerializeField] private GameObject[] _brokenGlassPices;

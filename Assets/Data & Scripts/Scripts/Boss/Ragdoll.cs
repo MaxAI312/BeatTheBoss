@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Ragdoll : MonoBehaviour, IPhysics
+public class Ragdoll : MonoBehaviour
 {
     [SerializeField] private Transform _grenadeTargetPoint;
     [SerializeField] private Rigidbody[] _allRigidbodies;

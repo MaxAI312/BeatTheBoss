@@ -12,9 +12,10 @@ public sealed class Player : PlayerBase
     [SerializeField] private FinishTappingTimer _finishTappingTimer;
     [SerializeField] private RageChecker _rageChecker;
     [SerializeField] private TeapotController _teapotController;
-
-    private float _defaultSpeed;
+    
     private Coroutine _guardTakenCoroutine;
+    private float _speedMultiplier = 2.5f;
+    private float _durationRebound = 0.2f;
 
     public MouseInput MouseInput => _mouseInput;
     public GrenadeThrower GrenadeThrower => _grenadeThrower;
@@ -22,12 +23,6 @@ public sealed class Player : PlayerBase
     public FinishTappingTimer FinishTappigTimer => _finishTappingTimer;
     public RageChecker RageChecker => _rageChecker;
     public TeapotController TeapotController => _teapotController;
-
-    protected override void Awake()
-    {
-        base.Awake();
-        _defaultSpeed = _movementSystem.DefaultSpeed;
-    }
 
     private void Update()
     {
@@ -46,21 +41,6 @@ public sealed class Player : PlayerBase
         base.OnDisable();
         CollisionHandler.GateTaken -= OnGateTaken;
         CollisionHandler.ItemGuardTaken -= OnGuardTaken;
-    }
-
-    private void OnRageChanged(int rageValue)
-    {
-        rageValue = Mathf.Clamp(rageValue, 0, 100);//MAGIC INT
-        var rageNormalized = rageValue / 100f;//MAGIC INT
-        _movementSystem.SetSpeed(_defaultSpeed + _defaultSpeed * rageNormalized * 0.5f);//MAGIC INT
-
-        var animationSpeed = Mathf.Clamp(_movementSystem.CurrentSpeed / _defaultSpeed, 0.5f, 1.5f);//MAGIC INT
-        PlayerAnimator.SetTimeScale(animationSpeed);
-    }
-
-    public void SetTimeScale(float value)
-    {
-        _movementSystem.SetSpeed(_defaultSpeed * value);
     }
 
     private void OnGateTaken(Grenade grenade)
@@ -94,9 +74,9 @@ public sealed class Player : PlayerBase
         var defaultSpeed = _movementSystem.DefaultSpeed;
 
         PlayerAnimator.ShowKnockedOut();
-        _movementSystem.SetSpeed(-defaultSpeed * 2.5f);//MAGIC INT
+        _movementSystem.SetSpeed(-defaultSpeed * _speedMultiplier);
 
-        yield return new WaitForSeconds(0.2f);//MAGIC INT
+        yield return new WaitForSeconds(_durationRebound);
 
         _movementSystem.SetSpeed(defaultSpeed);
         PlayerAnimator.ShowRun();

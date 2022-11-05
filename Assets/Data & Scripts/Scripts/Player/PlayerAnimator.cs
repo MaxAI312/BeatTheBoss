@@ -25,21 +25,30 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private float _sensitivity = 2;
 
     private float _currentTurnValue;
-
+    private float _minValueTurn = -1f;
+    private float _maxValueTurn = 1f;
+    private int _rightHandAnimatorLayer = 1;
+    private int _leftHandAnimatorLayer = 2;
+    private int _middleHandAnimatorLayer = 3;
+    private int _throwGrenadeAnimatorLayer = 4;
+    private int _finisherThrowAnimatorLayer = 5;
+    private float _minLayerWeight = 0f;
+    private float _maxLayerWeight = 1f;
+    
     public AvatarMask ThrowAvatarMask => _throwAvatarMask;
 
     public event Action ThrowEnded;
 
     public void SetTurn(float value)
     {
-        value = Mathf.Clamp(value * _sensitivity, -1, 1);//MAGIC INT
+        value = Mathf.Clamp(value * _sensitivity, _minValueTurn, _maxValueTurn);
         _currentTurnValue = Mathf.MoveTowards(_currentTurnValue, value, _turnSpeed * Time.deltaTime);
         _playerAnimator.SetFloat(Turn, _currentTurnValue);
     }
 
     public void ResetTurn()
     {
-        _playerAnimator.SetFloat(Turn,0);//MAGIC INT
+        _playerAnimator.SetFloat(Turn,0);
     }
 
     public void ShowIdle()
@@ -81,7 +90,7 @@ public class PlayerAnimator : MonoBehaviour
     public void ShowRightHandSlapBy(int index)
     {
         _playerAnimator.ResetTrigger(RightSlap);
-        _playerAnimator.SetLayerWeight(1,1);
+        _playerAnimator.SetLayerWeight(_rightHandAnimatorLayer,_maxLayerWeight);
         _playerAnimator.SetInteger(SlapIndex, index);
         _playerAnimator.SetTrigger(RightSlap);
     }
@@ -89,7 +98,7 @@ public class PlayerAnimator : MonoBehaviour
     public void ShowLeftHandSlapBy(int index)
     {
         _playerAnimator.ResetTrigger(LeftSlap);
-        _playerAnimator.SetLayerWeight(2, 1);
+        _playerAnimator.SetLayerWeight(_leftHandAnimatorLayer, _maxLayerWeight);
         _playerAnimator.SetInteger(SlapIndex, index);
         _playerAnimator.SetTrigger(LeftSlap);
     }
@@ -98,7 +107,7 @@ public class PlayerAnimator : MonoBehaviour
     {
         _playerAnimator.ResetTrigger(RightSlap);
         _playerAnimator.ResetTrigger(LeftSlap);
-        _playerAnimator.SetLayerWeight(3, 1);
+        _playerAnimator.SetLayerWeight(_middleHandAnimatorLayer, _maxLayerWeight);
         _playerAnimator.SetInteger(SlapIndex, index);
         _playerAnimator.SetTrigger(MiddleSlap);
     }
@@ -109,12 +118,12 @@ public class PlayerAnimator : MonoBehaviour
         ResetTriggers();
         if (isFinisherThrow)
         {
-            _playerAnimator.SetLayerWeight(4,0);//MAGIC INT
-            _playerAnimator.SetLayerWeight(5,1);//MAGIC INT
+            _playerAnimator.SetLayerWeight(_throwGrenadeAnimatorLayer,_minLayerWeight);
+            _playerAnimator.SetLayerWeight(_finisherThrowAnimatorLayer,_maxLayerWeight);
         }
         else
         {
-            _playerAnimator.SetLayerWeight(4,1);//MAGIC INT
+            _playerAnimator.SetLayerWeight(_throwGrenadeAnimatorLayer,_maxLayerWeight);
         }
         _playerAnimator.SetTrigger(ThrowStart);
         _endAnimationHandler.WaitingForThrowPrepare(ended);
@@ -129,14 +138,14 @@ public class PlayerAnimator : MonoBehaviour
 
     public void SetThrowGrenadeLayerWeightToZero()
     {
-        _playerAnimator.SetLayerWeight(4,0);
+        _playerAnimator.SetLayerWeight(_throwGrenadeAnimatorLayer,_minLayerWeight);
     }
 
     public void ShowThrowFinisher(Action grenadeDropped)
     {
         ResetTriggers();
-        _playerAnimator.SetLayerWeight(4,0);//MAGIC INT
-        _playerAnimator.SetLayerWeight(5,1);//MAGIC INT
+        _playerAnimator.SetLayerWeight(_throwGrenadeAnimatorLayer,_minLayerWeight);
+        _playerAnimator.SetLayerWeight(_finisherThrowAnimatorLayer,_maxLayerWeight);
         _playerAnimator.SetTrigger(ThrowFinisher);
         _endAnimationHandler.WaitingForThrowPrepare(grenadeDropped);
     }

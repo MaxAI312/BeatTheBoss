@@ -11,6 +11,9 @@ public class MainCameraAnimator : MonoBehaviour
 
     [SerializeField] private Animator _animator;
 
+    private float _durationScalingReduce = 0.3f;
+    private float _durationScaleReturnToNormal = 1f;
+        
     private void Awake()
     {
         Disable();
@@ -71,12 +74,12 @@ public class MainCameraAnimator : MonoBehaviour
     // Used in camera animation
     private void Handle_TimeScaleReduce()
     {
-        Time.timeScale = 0.3f;
+        Time.timeScale = _durationScalingReduce;
     }
     
     // Used in camera animation
     private void Handle_TimeScaleReturnToNormal()
     {
-        Time.timeScale = 1f;
+        Time.timeScale = _durationScaleReturnToNormal;
     }
 }

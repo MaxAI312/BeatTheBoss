@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 
-
 public abstract class MainTimer : MonoBehaviour
 {
     [SerializeField] private float _timerDefaultValue;

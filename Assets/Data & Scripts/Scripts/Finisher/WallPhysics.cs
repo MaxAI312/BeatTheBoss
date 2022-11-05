@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WallPhysics : MonoBehaviour, IPhysics
+public class WallPhysics : MonoBehaviour
 {
     [SerializeField] private Rigidbody[] _rigidbodies;
 

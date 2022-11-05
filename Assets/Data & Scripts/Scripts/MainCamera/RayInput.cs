@@ -8,6 +8,8 @@ public class RayInput : MonoBehaviour
     [SerializeField] private LayerMask _layerMask;
 
     private Camera _mainCamera;
+    private int _widthDevider = 2;
+    private int _heightDevider = 2;
 
     public Vector3 TargetPoint { get; private set; }
 
@@ -18,7 +20,7 @@ public class RayInput : MonoBehaviour
 
     private void Update()
     {
-        var ray = _mainCamera.ScreenPointToRay(new Vector3(width / 2, height / 2));
+        var ray = _mainCamera.ScreenPointToRay(new Vector3(width / _widthDevider, height / _heightDevider));
 
         if (Physics.Raycast(ray, out var hitInfo, _castDistance, _layerMask))
         {

@@ -1,7 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class Scaler : MonoBehaviour//REFACTORING
+public class Scaler : MonoBehaviour
 {
     [SerializeField] private float _durationDecreaseComponent = 0.10f;
     [SerializeField] private float _durationIncreaseComponent = 0.2f;
@@ -44,11 +44,8 @@ public class Scaler : MonoBehaviour//REFACTORING
 
             sequence.Append(transform.DOScale(maxValueScaling, _durationWeakIncreaseComponent));
             sequence.Append(transform.DOScale(_minValueScaling, _durationWeakDecreaseComponent));
-            //sequence.Append(transform.DOScale(1.25f, _durationDecreaseComponent));
             sequence.Append(transform.DOScale(isingFirstStep, _durationWeakDecreaseComponent));
-            //sequence.Append(transform.DOScale(1.125f, _durationDecreaseComponent));
             sequence.Append(transform.DOScale(isingSecondStep, _durationDecreaseComponent));
-            ////sequence.Append(transform.DOScale(1.2f, _durationDecreaseComponent));
             sequence.Append(transform.DOScale(isingThirdStep, _durationDecreaseComponent));
         }
         else
@@ -56,13 +53,9 @@ public class Scaler : MonoBehaviour//REFACTORING
             sequence.AppendInterval(_waitingBeforeScaling);
 
             sequence.Append(transform.DOScale(maxValueScaling, _durationIncreaseComponent));
-            //sequence.Append(transform.DOScale(maxValueScaling, _durationDecreaseComponent));
             sequence.Append(transform.DOScale(_isingFirstStep, _durationDecreaseComponent));
-            //sequence.Append(transform.DOScale(isingFirstStep, _durationDecreaseComponent));
             sequence.Append(transform.DOScale(_isingSecondStep, _durationDecreaseComponent));
-            //sequence.Append(transform.DOScale(isingSecondStep, _durationDecreaseComponent));
             sequence.Append(transform.DOScale(_isingThirdStep, _durationDecreaseComponent));
-            //sequence.Append(transform.DOScale(isingThirdStep, _durationDecreaseComponent));
             sequence.Append(transform.DOScale(_isingFourthStep, _durationDecreaseComponent));
         }
     }

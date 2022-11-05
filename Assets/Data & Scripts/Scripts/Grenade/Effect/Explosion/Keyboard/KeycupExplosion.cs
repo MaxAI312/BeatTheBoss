@@ -24,14 +24,11 @@ public class KeycupExplosion : MonoBehaviour
     public void CreateExplosion()
     {
         Sequence sequence = DOTween.Sequence();
-
-        sequence.AppendCallback(() => EnableStartIceCube());
+        
         sequence.AppendInterval(_delayBeforeExplosion);
-
         sequence.AppendCallback(() =>
         {
-            CreateIceCubes(_parts);
-            DisableStartPart();
+            CreatePartsExplosion(_parts);
 
             for (int i = 0; i < _parts.Length; i++)
             {
@@ -41,7 +38,7 @@ public class KeycupExplosion : MonoBehaviour
         });
     }
 
-    private void CreateIceCubes(GameObject[] iceCubes)
+    private void CreatePartsExplosion(GameObject[] iceCubes)
     {
         for (int i = 0; i < _parts.Length; i++)
         {
@@ -77,15 +74,5 @@ public class KeycupExplosion : MonoBehaviour
             yield return null;
         }
         _elapsedTime = 0f;
-    }
-
-    private void DisableStartPart()
-    {
-        //_startPart.gameObject.SetActive(false);
-    }
-
-    private void EnableStartIceCube()
-    {
-        //_startPart.gameObject.SetActive(true);
     }
 }

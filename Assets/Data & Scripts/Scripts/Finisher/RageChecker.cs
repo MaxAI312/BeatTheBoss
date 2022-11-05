@@ -6,6 +6,7 @@ public class RageChecker : MonoBehaviour
     [SerializeField] private Player _player;
 
     private int _startingValueRage;
+    private int _dividerValueRage = 2;
 
     private void Awake()
     {
@@ -19,7 +20,7 @@ public class RageChecker : MonoBehaviour
 
     private void Update()
     {
-        if (_player.Rage.Value >= (_startingValueRage + (_startingValueRage / 2)))
+        if (_player.Rage.Value >= (_startingValueRage + (_startingValueRage / _dividerValueRage)))
         {
             RageLimitIsOver?.Invoke();
             Disable();

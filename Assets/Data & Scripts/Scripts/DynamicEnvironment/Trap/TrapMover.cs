@@ -1,6 +1,5 @@
 using UnityEngine;
 using DG.Tweening;
-using System;
 
 public class TrapMover : MonoBehaviour
 {
@@ -10,6 +9,10 @@ public class TrapMover : MonoBehaviour
     [SerializeField] private bool _isRight;
 
     private Sequence _sequence;
+    private float _offsetX = 7f;
+    private float _durationOffsetX = 3f;
+    private int _negativeDirectionMultiplier = -1;
+    private int _positiveDirectionMultiplier = 1;
 
     private void Awake()
     {
@@ -33,15 +36,11 @@ public class TrapMover : MonoBehaviour
     {
         if (_isRight)
         {
-            _sequence.Append(transform.DOMoveX(transform.position.x - 7f, 3f));//MAGIC INT
-            _sequence.Append(transform.DOMoveX(transform.position.x, 3f));//MAGIC INT
-            _sequence.SetLoops(-1, LoopType.Restart);
+            Offset(_negativeDirectionMultiplier);
         }
         else if (_isLeft)
         {
-            _sequence.Append(transform.DOMoveX(transform.position.x + 7f, 3f));//MAGIC INT
-            _sequence.Append(transform.DOMoveX(transform.position.x, 3f));//MAGIC INT
-            _sequence.SetLoops(-1, LoopType.Restart);
+            Offset(_positiveDirectionMultiplier);
         }
     }
 
@@ -58,5 +57,12 @@ public class TrapMover : MonoBehaviour
     private void OnDestroyed()
     {
         _sequence.Kill();
+    }
+
+    private void Offset(int directionMultiplier)
+    {
+        _sequence.Append(transform.DOMoveX(transform.position.x + _offsetX * directionMultiplier, _durationOffsetX));
+        _sequence.Append(transform.DOMoveX(transform.position.x, _durationOffsetX));
+        _sequence.SetLoops(-1, LoopType.Restart);
     }
 }
